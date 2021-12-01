@@ -1,3 +1,4 @@
+#![cfg(test)]
 #![warn(clippy::pedantic)]
 
 fn count_increasing_windows(window_size: usize) -> usize {
@@ -19,26 +20,12 @@ fn count_increasing_windows(window_size: usize) -> usize {
         .count()
 }
 
-/// # Panics
-///
-/// Will panic if the input is malformed.
-///
-/// ```
-/// assert_eq!(1_602, day01::part1());
-/// ```
-#[must_use]
-pub fn part1() -> usize {
-    count_increasing_windows(1)
+#[test]
+fn part1() {
+    assert_eq!(1_602, count_increasing_windows(1));
 }
 
-/// # Panics
-///
-/// Will panic if the input is malformed.
-///
-/// ```
-/// assert_eq!(1_633, day01::part2());
-/// ```
-#[must_use]
-pub fn part2() -> usize {
-    count_increasing_windows(3)
+#[test]
+fn part2() {
+    assert_eq!(1_633, count_increasing_windows(3));
 }
