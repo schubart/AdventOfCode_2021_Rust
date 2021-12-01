@@ -1,5 +1,20 @@
 #![warn(clippy::pedantic)]
 
+fn count_increasing_windows(window_size: usize) -> usize {
+    let numbers: Vec<i32> = include_str!("input.txt")
+        .lines()
+        .map(str::parse)
+        .map(Result::unwrap)
+        .collect();
+
+    let sums: Vec<i32> = numbers
+        .windows(window_size)
+        .map(|window| window.iter().sum())
+        .collect();
+
+    sums.windows(2).filter(|pair| pair[0] < pair[1]).count()
+}
+
 /// # Panics
 ///
 /// Will panic if the input is malformed.
@@ -9,12 +24,7 @@
 /// ```
 #[must_use]
 pub fn part1() -> usize {
-    let numbers: Vec<i32> = include_str!("input.txt")
-        .lines()
-        .map(|l| l.parse().unwrap())
-        .collect();
-
-    numbers.windows(2).filter(|pair| pair[0] < pair[1]).count()
+    count_increasing_windows(1)
 }
 
 /// # Panics
@@ -26,15 +36,5 @@ pub fn part1() -> usize {
 /// ```
 #[must_use]
 pub fn part2() -> usize {
-    let numbers: Vec<i32> = include_str!("input.txt")
-        .lines()
-        .map(|l| l.parse().unwrap())
-        .collect();
-
-    let sums: Vec<i32> = numbers
-        .windows(3)
-        .map(|triple| triple.iter().sum())
-        .collect();
-
-    sums.windows(2).filter(|pair| pair[0] < pair[1]).count()
+    count_increasing_windows(3)
 }
