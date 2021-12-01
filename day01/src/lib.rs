@@ -7,12 +7,16 @@ fn count_increasing_windows(window_size: usize) -> usize {
         .map(Result::unwrap)
         .collect();
 
-    let sums: Vec<i32> = numbers
-        .windows(window_size)
-        .map(|window| window.iter().sum())
-        .collect();
-
-    sums.windows(2).filter(|pair| pair[0] < pair[1]).count()
+    // Example: If window size is 3: Comparing sum of
+    // A, B, C     with sum of
+    //    B, C, D
+    // B and C are part of both windows so they can be ignored when
+    // comparing sums of windows. Create windows of size 4 and
+    // compare only A and D.
+    numbers
+        .windows(window_size + 1)
+        .filter(|window| window[0] < window[window_size])
+        .count()
 }
 
 /// # Panics
