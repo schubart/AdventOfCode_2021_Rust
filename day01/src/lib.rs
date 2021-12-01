@@ -1,7 +1,5 @@
 #![warn(clippy::pedantic)]
 
-use itertools::Itertools;
-
 /// # Panics
 ///
 /// Will panic if the input is malformed.
@@ -11,12 +9,12 @@ use itertools::Itertools;
 /// ```
 #[must_use]
 pub fn part1() -> usize {
-    include_str!("input.txt")
+    let numbers: Vec<i32> = include_str!("input.txt")
         .lines()
-        .map(|l| l.parse::<i32>().unwrap())
-        .tuple_windows()
-        .filter(|(x, y)| x < y)
-        .count()
+        .map(|l| l.parse().unwrap())
+        .collect();
+
+    numbers.windows(2).filter(|pair| pair[0] < pair[1]).count()
 }
 
 /// # Panics
@@ -28,12 +26,15 @@ pub fn part1() -> usize {
 /// ```
 #[must_use]
 pub fn part2() -> usize {
-    include_str!("input.txt")
+    let numbers: Vec<i32> = include_str!("input.txt")
         .lines()
-        .map(|l| l.parse::<i32>().unwrap())
-        .tuple_windows()
-        .map(|(x1, x2, x3)| x1 + x2 + x3)
-        .tuple_windows()
-        .filter(|(x, y)| x < y)
-        .count()
+        .map(|l| l.parse().unwrap())
+        .collect();
+
+    let sums: Vec<i32> = numbers
+        .windows(3)
+        .map(|triple| triple.iter().sum())
+        .collect();
+
+    sums.windows(2).filter(|pair| pair[0] < pair[1]).count()
 }
