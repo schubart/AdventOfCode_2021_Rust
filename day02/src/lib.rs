@@ -37,11 +37,6 @@ fn part1() -> Number {
     horizontal * depth
 }
 
-#[test]
-fn test_part1() {
-    assert_eq!(1_882_980, part1());
-}
-
 fn part2() -> Number {
     let (horizontal, depth, _aim) = include_str!("input.txt").lines().map(parse).fold(
         (0, 0, 0),
@@ -53,6 +48,11 @@ fn part2() -> Number {
     );
 
     horizontal * depth
+}
+
+#[test]
+fn test_part1() {
+    assert_eq!(1_882_980, part1());
 }
 
 #[test]
