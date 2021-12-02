@@ -1,22 +1,38 @@
 #![cfg(test)]
 #![warn(clippy::pedantic)]
 
-fn part1() -> i32 {
-    let (horizontal, depth) =
-        include_str!("input.txt")
-            .lines()
-            .fold((0, 0), |(horizontal, depth), line| {
-                let mut split = line.split(' ');
-                let command = split.next().unwrap();
-                let arg = split.next().unwrap().parse::<i32>().unwrap();
+type Number = i32;
 
-                match command {
-                    "forward" => (horizontal + arg, depth),
-                    "down" => (horizontal, depth + arg),
-                    "up" => (horizontal, depth - arg),
-                    _ => panic!("Unexpected input: {}", line),
-                }
-            });
+enum Command {
+    Forward(Number),
+    Down(Number),
+    Up(Number),
+}
+
+use Command::{Down, Forward, Up};
+
+fn parse(line: &str) -> Command {
+    let mut split = line.split(' ');
+    let command = split.next().unwrap();
+    let arg = split.next().unwrap().parse::<Number>().unwrap();
+
+    match command {
+        "forward" => Forward(arg),
+        "down" => Down(arg),
+        "up" => Up(arg),
+        _ => panic!("Unexpected input: {}", line),
+    }
+}
+
+fn part1() -> Number {
+    let (horizontal, depth) = include_str!("input.txt").lines().map(parse).fold(
+        (0, 0),
+        |(horizontal, depth), command| match command {
+            Forward(arg) => (horizontal + arg, depth),
+            Down(arg) => (horizontal, depth + arg),
+            Up(arg) => (horizontal, depth - arg),
+        },
+    );
 
     horizontal * depth
 }
@@ -26,22 +42,15 @@ fn test_part1() {
     assert_eq!(1_882_980, part1());
 }
 
-fn part2() -> i32 {
-    let (horizontal, depth, _aim) =
-        include_str!("input.txt")
-            .lines()
-            .fold((0, 0, 0), |(horizontal, depth, aim), line| {
-                let mut split = line.split(' ');
-                let command = split.next().unwrap();
-                let arg = split.next().unwrap().parse::<i32>().unwrap();
-
-                match command {
-                    "forward" => (horizontal + arg, depth + aim * arg, aim),
-                    "down" => (horizontal, depth, aim + arg),
-                    "up" => (horizontal, depth, aim - arg),
-                    _ => panic!("Unexpected input: {}", line),
-                }
-            });
+fn part2() -> Number {
+    let (horizontal, depth, _aim) = include_str!("input.txt").lines().map(parse).fold(
+        (0, 0, 0),
+        |(horizontal, depth, aim), command| match command {
+            Forward(arg) => (horizontal + arg, depth + aim * arg, aim),
+            Down(arg) => (horizontal, depth, aim + arg),
+            Up(arg) => (horizontal, depth, aim - arg),
+        },
+    );
 
     horizontal * depth
 }
