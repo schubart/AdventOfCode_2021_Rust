@@ -3,7 +3,7 @@
 
 fn minimize<F>(cost: F) -> i32
 where
-    F: Fn(i32, i32) -> i32,
+    F: Fn(i32) -> i32,
 {
     let positions: Vec<i32> = include_str!("input.txt")
         .trim()
@@ -15,18 +15,16 @@ where
     let max = *positions.iter().max().unwrap();
 
     (min..=max)
-        .map(|p1| positions.iter().map(|&p2| cost(p1, p2)).sum())
+        .map(|p1| positions.iter().map(|&p2| cost((p1 - p2).abs())).sum())
         .min()
         .unwrap()
 }
 
-fn part1_cost(p1: i32, p2: i32) -> i32 {
-    (p1 - p2).abs()
+fn part1_cost(distance: i32) -> i32 {
+    distance
 }
 
-fn part2_cost(p1: i32, p2: i32) -> i32 {
-    let distance = (p1 - p2).abs();
-
+fn part2_cost(distance: i32) -> i32 {
     // Gauss formula for sum of first n numbers.
     distance * (distance + 1) / 2
 }
