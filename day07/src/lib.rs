@@ -1,11 +1,13 @@
 #![cfg(test)]
 #![warn(clippy::pedantic)]
 
-fn minimize<F>(cost: F) -> i32
+type Number = i32;
+
+fn minimize<F>(cost: F) -> Number
 where
-    F: Fn(i32) -> i32,
+    F: Fn(Number) -> Number,
 {
-    let positions: Vec<i32> = include_str!("input.txt")
+    let positions: Vec<Number> = include_str!("input.txt")
         .trim()
         .split(',')
         .map(|n| n.parse().unwrap())
@@ -20,11 +22,11 @@ where
         .unwrap()
 }
 
-fn part1_cost(distance: i32) -> i32 {
+fn part1_cost(distance: Number) -> Number {
     distance
 }
 
-fn part2_cost(distance: i32) -> i32 {
+fn part2_cost(distance: Number) -> Number {
     // Gauss formula for sum of first n numbers.
     distance * (distance + 1) / 2
 }
