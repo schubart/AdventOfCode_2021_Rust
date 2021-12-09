@@ -15,48 +15,39 @@ fn part1() -> usize {
         .count()
 }
 
-trait RemoveOnly<T> {
-    // Panics if there is not exactly one matching element, remove and return it.
-    fn remove_only<F>(&mut self, predicate: F) -> T
-    where
-        T: Clone,
-        F: Fn(&&T) -> bool + Copy;
-}
+// If there is exactly one matching element, remove and return it. Else panic.
+fn remove_only<T, F>(input: &mut Vec<T>, predicate: F) -> T
+where
+    T: Clone,
+    F: Fn(&&T) -> bool + Copy,
+{
+    let mut results = input.iter().filter(predicate);
+    let result = results.next().expect("no element found").clone();
+    assert!(results.next().is_none(), "multiple elements found");
 
-impl<T> RemoveOnly<T> for Vec<T> {
-    fn remove_only<F>(&mut self, predicate: F) -> T
-    where
-        T: Clone,
-        F: Fn(&&T) -> bool + Copy,
-    {
-        let mut results = self.iter().filter(predicate);
-        let result = results.next().expect("no element found").clone();
-        assert!(results.next().is_none(), "multiple elements found");
+    // Vec::drain_filter would be useful here, but don't want to depend on nighly.
+    input.retain(|x| !predicate(&x));
 
-        // Vec::drain_filter would be useful here, but don't want to depend on nighly.
-        self.retain(|x| !predicate(&x));
-
-        result
-    }
+    result
 }
 
 fn decode(input: &mut Vec<Signal>) -> Lookup {
     // Easy cases.
-    let n1 = input.remove_only(|x| x.len() == 2);
-    let n4 = input.remove_only(|x| x.len() == 4);
-    let n7 = input.remove_only(|x| x.len() == 3);
-    let n8 = input.remove_only(|x| x.len() == 7);
+    let n1 = remove_only(input, |x| x.len() == 2);
+    let n4 = remove_only(input, |x| x.len() == 4);
+    let n7 = remove_only(input, |x| x.len() == 3);
+    let n8 = remove_only(input, |x| x.len() == 7);
 
     // 3 is the only 5-segment digit that shares 2 segments with digit 1.
-    let n3 = input.remove_only(|x| x.len() == 5 && (*x & &n1).len() == 2);
-    let n2 = input.remove_only(|x| x.len() == 5 && (*x & &n4).len() == 2);
+    let n3 = remove_only(input, |x| x.len() == 5 && (*x & &n1).len() == 2);
+    let n2 = remove_only(input, |x| x.len() == 5 && (*x & &n4).len() == 2);
     // 5 is the only remaining 5-segment digit.
-    let n5 = input.remove_only(|x| x.len() == 5);
+    let n5 = remove_only(input, |x| x.len() == 5);
 
     // And so on.
-    let n6 = input.remove_only(|x| x.len() == 6 && (*x & &n1).len() == 1);
-    let n9 = input.remove_only(|x| x.len() == 6 && (*x & &n4).len() == 4);
-    let n0 = input.remove_only(|x| x.len() == 6);
+    let n6 = remove_only(input, |x| x.len() == 6 && (*x & &n1).len() == 1);
+    let n9 = remove_only(input, |x| x.len() == 6 && (*x & &n4).len() == 4);
+    let n0 = remove_only(input, |x| x.len() == 6);
 
     assert!(input.is_empty());
 
