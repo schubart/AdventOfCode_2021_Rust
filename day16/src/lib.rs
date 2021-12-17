@@ -87,31 +87,14 @@ where
 }
 
 fn parse() -> Output {
-    let bits = include_str!("input.txt")
-        .trim()
-        .chars()
-        .flat_map(|c| match c {
-            '0' => [0, 0, 0, 0],
-            '1' => [0, 0, 0, 1],
-            '2' => [0, 0, 1, 0],
-            '3' => [0, 0, 1, 1],
-            '4' => [0, 1, 0, 0],
-            '5' => [0, 1, 0, 1],
-            '6' => [0, 1, 1, 0],
-            '7' => [0, 1, 1, 1],
-            '8' => [1, 0, 0, 0],
-            '9' => [1, 0, 0, 1],
-            'A' => [1, 0, 1, 0],
-            'B' => [1, 0, 1, 1],
-            'C' => [1, 1, 0, 0],
-            'D' => [1, 1, 0, 1],
-            'E' => [1, 1, 1, 0],
-            'F' => [1, 1, 1, 1],
-            _ => panic!(),
-        });
-
     let mut bits = Bits {
-        iterator: bits,
+        iterator: include_str!("input.txt").trim().chars().flat_map(|c| {
+            // Turn hex digit to number and then to four digit binary.
+            format!("{:04b}", c.to_digit(16).unwrap())
+                .chars()
+                .map(|c| c.to_digit(2).unwrap() as Value)
+                .collect::<Vec<_>>()
+        }),
         remaining: usize::MAX,
     };
 
