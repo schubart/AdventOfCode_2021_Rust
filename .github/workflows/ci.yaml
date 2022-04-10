@@ -1,6 +1,12 @@
 name: Continuous Integration
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Every Friday
+    - cron: '33 13 * * 5'
 
 jobs:
   test:
