@@ -21,8 +21,8 @@ fn part1() -> Number {
         let majority_value = ones >= zeros;
 
         (
-            (gamma << 1) | majority_value as Number,
-            (epsilon << 1) | !majority_value as Number,
+            (gamma << 1) | Number::from(majority_value),
+            (epsilon << 1) | Number::from(!majority_value),
         )
     });
 
@@ -43,7 +43,7 @@ fn shrink(mut words: Words, retain_majority: bool) -> Number {
         if words.len() == 1 {
             let word = words.iter().next().unwrap();
             // Convert bits to number.
-            return word.iter().fold(0, |x, bit| (x << 1) | *bit as Number);
+            return word.iter().fold(0, |x, bit| (x << 1) | Number::from(*bit));
         }
     }
 
