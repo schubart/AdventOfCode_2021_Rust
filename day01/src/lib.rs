@@ -21,11 +21,11 @@ fn count_increasing_windows(window_size: usize) -> usize {
 }
 
 #[test]
-fn part1() {
+fn test_part1() {
     assert_eq!(1_602, count_increasing_windows(1));
 }
 
 #[test]
-fn part2() {
+fn test_part2() {
     assert_eq!(1_633, count_increasing_windows(3));
 }
