@@ -77,9 +77,10 @@ fn test_part2() {
         pools.push(fill(&mut points, point));
     }
 
-    pools.sort();
-    assert_eq!(Vec::<usize>::new(), pools);
-    
+    pools.sort_unstable();
+    pools.reverse();
+    let p: usize = pools.iter().take(3).product();
+    assert_eq!(1235430, p);
 }
 
 fn fill(points: &mut HashSet<Point>, point: Point) -> usize {
