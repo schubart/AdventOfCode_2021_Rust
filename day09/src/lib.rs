@@ -1,8 +1,8 @@
 #![cfg(test)]
 #![warn(clippy::pedantic)]
 
-use std::collections::HashSet;    
-    
+use std::collections::HashSet;
+
 fn get(matrix: &[Vec<u8>], x: isize, y: isize) -> &u8 {
     #[allow(clippy::cast_possible_wrap)]
     if y < 0 || y >= (matrix.len() as isize) {
@@ -69,7 +69,7 @@ fn test_part2() {
         .collect();
 
     let mut points = HashSet::new();
-    
+
     for (y, row) in heights.iter().enumerate() {
         for (x, height) in row.iter().enumerate() {
             if *height != 9 {
@@ -96,11 +96,9 @@ fn fill(points: &mut HashSet<Point>, point @ (x, y): Point) -> usize {
     }
 
     let deltas = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
-    let mut result = 1;
-    for (dx, dy) in deltas {
-        result += fill(points, (x + dx, y + dy));
-    }
-
-    result
+    return 1 + deltas
+        .iter()
+        .map(|(dx, dy)| (x + dx, y + dy))
+        .map(|p| fill(points, p))
+        .sum::<usize>();
 }
