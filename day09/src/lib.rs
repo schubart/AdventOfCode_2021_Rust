@@ -72,11 +72,28 @@ fn test_part2() {
         }
     }
 
+    let mut pools = vec![];
     while let Some(&point) = points.iter().next() {
-        points.remove(&point);
+        pools.push(fill(&mut points, point));
     }
+
+    pools.sort();
+    assert_eq!(Vec::<usize>::new(), pools);
+    
 }
 
-fn fill(points: &mut HashSet<Point>, point: Point) {
+fn fill(points: &mut HashSet<Point>, point: Point) -> usize {
     points.remove(&point);
+
+    let deltas = [(-1, 0), (1, 0), (0, -1), (0, 1)];
+
+    let mut result = 1;
+    for delta in deltas {
+        let p2 = (point.0 + delta.0, point.1 + delta.1);
+        if points.contains(&p2) {
+            result += fill(points, p2);
+        }
+    }
+
+    result
 }
