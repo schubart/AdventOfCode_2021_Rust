@@ -81,7 +81,7 @@ fn parse() -> Points {
     }
 
     points
-}    
+}
 
 #[test]
 fn test_part2() {
@@ -98,8 +98,7 @@ fn test_part2() {
 }
 
 fn neighbours((x, y): Point) -> impl Iterator<Item = Point> {
-    let deltas = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-    deltas.into_iter().map(move |(dx, dy)| (x + dx, y + dy))
+    [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)].into_iter()
 }
 
 fn fill(points: &mut Points, point: Point) -> usize {
