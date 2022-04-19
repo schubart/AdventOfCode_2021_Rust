@@ -98,7 +98,6 @@ fn fill(points: &mut HashSet<Point>, point @ (x, y): Point) -> usize {
     let deltas = [(-1, 0), (1, 0), (0, -1), (0, 1)];
     return 1 + deltas
         .iter()
-        .map(|(dx, dy)| (x + dx, y + dy))
-        .map(|p| fill(points, p))
+        .map(|(dx, dy)| fill(points, (x + dx, y + dy)))
         .sum::<usize>();
 }
