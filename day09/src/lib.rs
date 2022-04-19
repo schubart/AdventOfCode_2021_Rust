@@ -91,16 +91,16 @@ fn test_part2() {
 }
 
 fn fill(points: &mut HashSet<Point>, point @ (x, y): Point) -> usize {
-    points.remove(&point);
+    if !points.remove(&point) {
+        return 0;
+    }
 
     let deltas = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     let mut result = 1;
     for (dx, dy) in deltas {
         let p2 = (x + dx, y + dy);
-        if points.contains(&p2) {
-            result += fill(points, p2);
-        }
+        result += fill(points, p2);
     }
 
     result
