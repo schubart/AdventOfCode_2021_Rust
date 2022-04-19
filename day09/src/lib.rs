@@ -99,8 +99,7 @@ fn fill(points: &mut HashSet<Point>, point @ (x, y): Point) -> usize {
 
     let mut result = 1;
     for (dx, dy) in deltas {
-        let p2 = (x + dx, y + dy);
-        result += fill(points, p2);
+        result += fill(points, (x + dx, y + dy));
     }
 
     result
