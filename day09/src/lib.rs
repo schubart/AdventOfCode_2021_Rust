@@ -1,6 +1,7 @@
 #![cfg(test)]
 #![warn(clippy::pedantic)]
 
+use std::collections::HashMap;
 use std::collections::HashSet;
 
 fn get(matrix: &[Vec<u8>], x: isize, y: isize) -> &u8 {
@@ -68,20 +69,20 @@ fn test_part2() {
         .map(|line| line.chars().map(|c| (c as u8) - b'0').collect())
         .collect();
 
-    let mut points = HashSet::new();
+    let mut points = HashMap::new();
 
     for (y, row) in heights.iter().enumerate() {
         for (x, height) in row.iter().enumerate() {
             if *height != 9 {
                 #[allow(clippy::cast_possible_wrap)]
                 let point = (x as isize, y as isize);
-                points.insert(point);
+                points.insert(point, *height);
             }
         }
     }
 
     let mut pools = vec![];
-    while let Some(&point) = points.iter().next() {
+    while let Some((&point, _)) = points.iter().next() {
         pools.push(fill(&mut points, point));
     }
 
@@ -95,8 +96,8 @@ fn neighbours((x, y): Point) -> impl Iterator<Item = Point> {
     deltas.into_iter().map(move |(dx, dy)| (x + dx, y + dy))
 }
 
-fn fill(points: &mut HashSet<Point>, point: Point) -> usize {
-    if points.remove(&point) {
+fn fill(points: &mut HashMap<Point, u8>, point: Point) -> usize {
+    if let Some(_) = points.remove(&point) {
         1 + neighbours(point).map(|p| fill(points, p)).sum::<usize>()
     } else {
         0
