@@ -90,14 +90,15 @@ fn test_part2() {
     assert_eq!(1_235_430, p);
 }
 
-fn fill(points: &mut HashSet<Point>, point @ (x, y): Point) -> usize {
-    if !points.remove(&point) {
-        return 0;
-    }
-
+fn neighbours((x, y): Point) -> impl Iterator<Item = Point> {
     let deltas = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-    return 1 + deltas
-        .iter()
-        .map(|(dx, dy)| fill(points, (x + dx, y + dy)))
-        .sum::<usize>();
+    deltas.into_iter().map(move |(dx, dy)| (x + dx, y + dy))
+}
+
+fn fill(points: &mut HashSet<Point>, point: Point) -> usize {
+    if points.remove(&point) {
+        1 + neighbours(point).map(|p| fill(points, p)).sum::<usize>()
+    } else {
+        0
+    }
 }
