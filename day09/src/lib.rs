@@ -62,8 +62,7 @@ fn test_part1() {
 type Point = (isize, isize);
 type Points = HashMap<Point, u8>;
 
-#[test]
-fn test_part2() {
+fn parse() -> Points {
     let heights: Vec<Vec<u8>> = include_str!("input.txt")
         .lines()
         .map(|line| line.chars().map(|c| (c as u8) - b'0').collect())
@@ -80,6 +79,13 @@ fn test_part2() {
             }
         }
     }
+
+    points
+}    
+
+#[test]
+fn test_part2() {
+    let mut points = parse();
 
     let mut pools = vec![];
     while let Some((&point, _)) = points.iter().next() {
