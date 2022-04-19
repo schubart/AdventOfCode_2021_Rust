@@ -78,8 +78,7 @@ fn test_part2() {
     }
 
     pools.sort_unstable();
-    pools.reverse();
-    let p: usize = pools.iter().take(3).product();
+    let p: usize = pools.iter().rev().take(3).product();
     assert_eq!(1235430, p);
 }
 
