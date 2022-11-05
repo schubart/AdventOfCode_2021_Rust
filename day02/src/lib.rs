@@ -20,7 +20,7 @@ fn parse(line: &str) -> Command {
         "forward" => Forward(arg),
         "down" => Down(arg),
         "up" => Up(arg),
-        _ => panic!("Unexpected input: {}", line),
+        _ => panic!("Unexpected input: {line}"),
     }
 }
 

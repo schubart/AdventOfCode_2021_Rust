@@ -35,7 +35,7 @@ fn parse() -> (Vec<Number>, Vec<Board>) {
             .collect();
         boards.push(board);
 
-        if lines.next() == None {
+        if lines.next().is_none() {
             break;
         }
     }
